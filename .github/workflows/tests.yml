@@ -1,0 +1,51 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  # Une etape = un job = une coche verte ou rouge dans l'onglet Actions.
+  # fail-fast: false pour que l'etape 3 tourne meme si l'etape 1 est rouge.
+  etapes:
+    name: ${{ matrix.etape }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        etape: [etape-1, etape-2, etape-3]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+
+      - name: Installer les dependances
+        run: composer install --prefer-dist --no-progress
+
+      - name: Lancer les tests de l'etape
+        run: composer test -- --group=${{ matrix.etape }}
+
+  bonus:
+    name: bonus
+    runs-on: ubuntu-latest
+    # Le bonus ne fait jamais echouer le depot : il est facultatif.
+    continue-on-error: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+
+      - name: Installer les dependances
+        run: composer install --prefer-dist --no-progress
+
+      - name: Lancer les tests bonus
+        run: composer test -- --group=bonus
