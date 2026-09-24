@@ -8,6 +8,8 @@ use Countable;
 use LogicException;
 use UnderflowException;
 
+use function PHPUnit\Framework\isEmpty;
+
 /**
  * ÉTAPE 1 — Une pile (LIFO : Last In, First Out).
  *
@@ -31,7 +33,7 @@ final class Stack implements Countable
     public function push(mixed $element): void
     {
         // TODO : ajouter l'élément à la fin de $this->elements.
-        throw new LogicException('À implémenter');
+        $this->elements[] = $element;
     }
 
     /**
@@ -42,7 +44,11 @@ final class Stack implements Countable
     public function pop(): mixed
     {
         // TODO : refuser si la pile est vide, sinon retirer le dernier élément.
-        throw new LogicException('À implémenter');
+        if ($this->isEmpty()) {
+            throw new \UnderflowException("La pile est déjà vide, impossible de retirer l'élément.");
+        } else {
+            return array_pop($this->elements);
+        }
     }
 
     /**
@@ -53,20 +59,24 @@ final class Stack implements Countable
     public function peek(): mixed
     {
         // TODO : comme pop(), mais on ne touche pas à la pile.
-        throw new LogicException('À implémenter');
+        if ($this->isEmpty()) {
+            throw new \UnderflowException("La pile est déjà vide, impossible de retirer l'élément.");
+        }
+
+        return $this->elements[count($this->elements) - 1];
     }
 
     /** La pile est-elle vide ? */
     public function isEmpty(): bool
     {
         // TODO : une seule comparaison suffit.
-        throw new LogicException('À implémenter');
+        return count($this->elements) === 0;
     }
 
     /** Nombre d'éléments. Countable permet d'écrire `count($stack)`. */
     public function count(): int
     {
         // TODO : c'est l'interface Countable qui rend `count($stack)` possible.
-        throw new LogicException('À implémenter');
+        return count($this->elements);
     }
 }

@@ -30,13 +30,16 @@ class ArrayList implements ListInterface
     public function push(mixed $element): void
     {
         // TODO : ajouter à la fin.
-        throw new LogicException('À implémenter');
+        $this->elements[] = $element;
     }
 
     public function get(int $index): mixed
     {
         // TODO : vérifier l'index, puis renvoyer l'élément.
-        throw new LogicException('À implémenter');
+        if ($index < 0 || $index >= count($this->elements)) {
+            throw new \OutOfBoundsException("Index invalide.");
+        }
+        return $this->elements[$index];
     }
 
     public function set(int $index, mixed $element): void
@@ -65,12 +68,12 @@ class ArrayList implements ListInterface
 
     public function size(): int
     {
-        throw new LogicException('À implémenter');
+        return count($this->elements);
     }
 
     public function isEmpty(): bool
     {
-        throw new LogicException('À implémenter');
+        return $this->elements === null;
     }
 
     public function clear(): void
